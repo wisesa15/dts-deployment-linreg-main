@@ -28,9 +28,8 @@
             <h1 class="text-3xl font-bold mb-8">
                 Prediksi Prediksi Kota Semarang :
             </h1>
-            {{ data }}
             <form
-                action="{{ url_for('predict') }}"
+                action="{{ url_for('lstmPredict') }}"
                 method="post"
                 class="flex flex-col"
             >
@@ -85,6 +84,21 @@
                     Estimasi PDRB 
                 </h1>
                 <h2 class="text-5xl font-bold">{{ "Rp{:,.2f}".format(pdrb) }}</h2>
+                <a href="{{ url_for('index') }}"
+                    class="
+                        flex
+                        justify-center
+                        align-center
+                        mt-8
+                        p-4
+                        bg-gradient-to-r
+                        from-green-400
+                        to-blue-500
+                        text-white
+                        rounded-md
+                    "
+                > Kembali
+                </a>
             </div>
         </section>
     </body>
