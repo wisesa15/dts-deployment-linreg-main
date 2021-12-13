@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <title>Aplikasi Prediksi PDRB Kota Semarang Berdasarkan Pendapatan pada 7 sektor dan PDRB sebelumnya </title>
+    </head>
+    <body
+        class="
+            flex flex-col
+            justify-between
+            item-center
+            p-8
+            min-h-screen
+            bg-gradient-to-r
+            from-green-400
+            to-blue-500
+            text-gray-800
+            md:flex-row
+        "
+    >
+        <main class="bg-white p-16 rounded-lg">
+            <h1 class="text-3xl font-bold mb-8">
+                Prediksi PDRB Kota Semarang :
+            </h1>
+            <form
+                action="{{ url_for('multivariatePredict') }}"
+                method="post"
+                class="flex flex-col"
+            >
+                {% for i in range(1,9) %}
+                {% if i == 1 %}
+                <label class="mb-2">Sektor Industri Pengolahan</label>
+                {% elif i == 2 %}
+                <label class="mb-2">Sektor Pengadaan Listrik dan Gas</label>
+                {% elif i == 3 %}
+                <label class="mb-2">Sektor Konstruksi</label>
+                {% elif i == 4 %}
+                <label class="mb-2">Sektor Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor</label>
+                {% elif i == 5 %}
+                <label class="mb-2">Sektor Real Estate</label>
+                {% elif i == 6 %}
+                <label class="mb-2">Sektor Jasa Perusahaan</label>
+                {% elif i == 7 %}
+                <label class="mb-2">Sektor Jasa Kesehatan dan Kegiatan Sosial</label>
+                {% else %}
+                <label class="mb-2">PDRB Sebelumnya</label>
+                {% endif %}
+                <input
+                type="number"
+                {% if i == 1 %}
+                name="Sektor"
+                placeholder="Sektor Industri Pengolahan"
+                {% elif i == 2 %}
+                name="Sektor"
+                placeholder="Sektor Pengadaan Listrik dan Gas"
+                {% elif i == 3 %}
+                name="Sektor"
+                placeholder="Sektor Konstruksi"
+                {% elif i == 4 %}
+                name="Sektor"
+                placeholder="Sektor Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor"
+                {% elif i == 5 %}
+                name="Sektor"
+                placeholder="Sektor Real Estate"
+                {% elif i == 6 %}
+                name="Sektor"
+                placeholder="Sektor Jasa Perusahaan"
+                {% elif i == 7 %}
+                name="Sektor"
+                placeholder="Sektor Jasa Kesehatan dan Kegiatan Sosial"
+                {% else %}
+                name="Sektor"
+                placeholder="PDRB Sebelumnya "
+                {% endif %}
+
+                required="required"
+                class="p-4 bg-gray-100 rounded-md"
+                />
+                {% endfor %}
+
+                <button
+                    type="submit"
+                    class="
+                        flex
+                        justify-center
+                        align-center
+                        mt-8
+                        p-4
+                        bg-gradient-to-r
+                        from-green-400
+                        to-blue-500
+                        text-white
+                        rounded-md
+                    "
+                >
+                    PREDIKSI SEKARANG
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="feather feather-arrow-right ml-4"
+                    >
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </form>
+        </main>
+        <section class="mt-8 h-full flex-auto rounded-lg md:mt-0 md:ml-8">
+            <div class="bg-white p-16 rounded-lg">
+                <h1 class="text-2xl mb-8">
+                    Estimasi PDRB 
+                </h1>
+                <h2 class="text-5xl font-bold">{{ "Rp{:,.2f}".format(pdrb) }}</h2>
+                <a href="{{ url_for('index') }}"
+                    class="
+                        flex
+                        justify-center
+                        align-center
+                        mt-8
+                        p-4
+                        bg-gradient-to-r
+                        from-green-400
+                        to-blue-500
+                        text-white
+                        rounded-md
+                    "
+                > Kembali
+                </a>
+            </div>
+        </section>
+    </body>
+</html>

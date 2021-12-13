@@ -9,8 +9,11 @@ app = Flask(__name__)
 model_file = open('LinearRegressionPDRB.pkl', 'rb')
 model_linreg = pickle.load(model_file, encoding='bytes')
 model_lstm = tf.keras.models.load_model('model_lstm.h5')
+model_multivariate = tf.keras.models.load_model('modelMultivariateLSTM.h5')
 scaller_file = open('scaller.pkl', 'rb')
 scaller = pickle.load(scaller_file, encoding='bytes')
+scaller_file2 = open('scalerMultivariate.pkl', 'rb')
+scallerMultivariate = pickle.load(scaller_file2, encoding='bytes')
 
 @app.route('/')
 def index():
@@ -55,6 +58,30 @@ def lstmPredict():
 
     return render_template('index1.html', pdrb=output)
 
+@app.route('/multivariate')
+def multivariate():
+    return render_template('index2.html', pdrb=0)
+
+@app.route('/multivariate', methods=['POST'])
+def multivariatePredict():
+    '''
+    Predict the GDP cost based on user inputs
+    and render the result to the html page
+    '''
+    data = request.form.getlist('Sektor')
+    data = list(map(int, data))
+    data = np.reshape(data, (-1,1))
+    data = np.reshape(data, (1,8))
+    data = scallerMultivariate.transform(data)
+    data = np.reshape(data, (1,1,8))
+
+    prediction = model_multivariate.predict(data)
+    data = np.reshape(data, (1,8))
+    prediction = np.concatenate((data[:, :-1],prediction), axis=1)
+    prediction = scallerMultivariate.inverse_transform(prediction)
+    prediction = prediction[:,-1]
+    output = prediction[0]
+    return render_template('index2.html', pdrb=output)
 
 if __name__ == '__main__':
     app.run(debug=True)
